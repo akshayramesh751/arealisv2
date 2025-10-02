@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { AnimatedBackground } from '@/components/animated-background';
 import { Network, TrendingUp, Target } from 'lucide-react';
+import Image from 'next/image';
 
 export default function LandingPage() {
   return (
@@ -11,7 +12,13 @@ export default function LandingPage() {
       <header className="relative z-10 flex justify-between items-center px-8 py-6">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30">
-            <Network className="w-6 h-6 text-primary" />
+            <Image 
+              src="/logos/foresight flow logo.jpeg" 
+              alt="ForesightFlow Logo" 
+              width={32} 
+              height={32} 
+              className="rounded"
+            />
           </div>
           <span className="text-2xl font-bold text-white">ForesightFlow</span>
         </div>
