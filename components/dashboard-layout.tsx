@@ -2,13 +2,31 @@
 
 import { ReactNode, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Network, ChartBar as BarChart3, TrendingUp, FileText, Plus, Moon, Sun } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { ChartBar as BarChart3, TrendingUp, FileText, Plus, Moon, Sun, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import Image from 'next/image';
 
-export function DashboardLayout({ children }: { children: ReactNode }) {
+interface DashboardLayoutProps {
+  children: ReactNode;
+  userInfo?: {
+    firstName: string;
+    lastName: string;
+    company: string;
+  };
+}
+
+export function DashboardLayout({ children, userInfo }: DashboardLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [isDark, setIsDark] = useState(false);
 
   const navItems = [
@@ -17,13 +35,32 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
     { href: '/plan', label: 'Actionable Business Plan', icon: FileText },
   ];
 
+  const handleLogout = () => {
+    // Clear any stored user data
+    localStorage.removeItem('userInfo');
+    // Redirect to home page
+    router.push('/');
+  };
+
+  const fullName = userInfo ? `${userInfo.firstName} ${userInfo.lastName}` : 'John Doe';
+  const initials = userInfo
+    ? `${userInfo.firstName.charAt(0)}${userInfo.lastName.charAt(0)}`.toUpperCase()
+    : 'JD';
+  const company = userInfo?.company || 'Company Name';
+
   return (
     <div className={isDark ? 'dark-theme' : ''}>
       <div className="min-h-screen bg-background">
         <aside className="fixed left-0 top-0 h-full w-64 border-r border-border bg-card p-4 flex flex-col">
           <Link href="/dashboard" className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30">
-              <Network className="w-6 h-6 text-primary" />
+            <div className="w-10 h-10">
+              <Image
+                src="/logos/foresight flow logo.jpeg"
+                alt="ForesightFlow Logo"
+                width={40}
+                height={40}
+                className="rounded-lg"
+              />
             </div>
             <span className="text-xl font-bold">ForesightFlow</span>
           </Link>
@@ -79,9 +116,32 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
                 >
                   {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                 </Button>
-                <Avatar>
-                  <AvatarFallback className="bg-primary/20 text-primary">JD</AvatarFallback>
-                </Avatar>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="p-0 rounded-full hover:bg-primary/10 active:bg-primary/20">
+                      <Avatar className="hover:bg-primary active:bg-primary transition-colors">
+                        <AvatarFallback className="bg-primary/20 text-primary hover:bg-primary hover:text-white active:bg-primary active:text-white transition-colors">
+                          {initials}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <div className="px-3 py-2">
+                      <p className="font-medium text-sm">{fullName}</p>
+                      <p className="text-xs text-muted-foreground">{company}</p>
+                    </div>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={handleLogout}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer"
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Log out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
           </header>

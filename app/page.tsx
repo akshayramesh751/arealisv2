@@ -11,13 +11,13 @@ export default function LandingPage() {
 
       <header className="relative z-10 flex justify-between items-center px-8 py-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30">
+          <div className="w-10 h-10">
             <Image 
               src="/logos/foresight flow logo.jpeg" 
               alt="ForesightFlow Logo" 
-              width={32} 
-              height={32} 
-              className="rounded"
+              width={40} 
+              height={40} 
+              className="rounded-lg"
             />
           </div>
           <span className="text-2xl font-bold text-white">ForesightFlow</span>
@@ -52,7 +52,7 @@ export default function LandingPage() {
           <Link href="/signup">
             <Button
               size="lg"
-              className="bg-primary hover:bg-primary/90 text-white font-semibold text-lg px-12 py-8 h-auto rounded-xl shadow-2xl shadow-primary/20 transition-all hover:scale-105"
+              className="bg-primary hover:bg-primary/90 text-white font-semibold text-lg px-12 py-8 h-auto rounded-xl shadow-2xl shadow-primary/20 transition-all hover:scale-105 mt-5"
             >
               Explore the Most Advanced Business Strategy Intelligence Model
             </Button>
@@ -75,7 +75,14 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+
+          {/* Footer section */}
+          <div className="mt-16 pt-8 border-t border-white/10 text-center space-y-2">
+            <p className="text-sm text-white/80">A Product by Jay Shah Consultancy</p>
+            <p className="text-xs text-primary">Developed by Arealis</p>
+          </div>
         </div>
+        <div className="h-8"></div>
       </main>
     </div>
   );

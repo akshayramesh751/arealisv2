@@ -110,15 +110,15 @@ export default function ConnectDataPage() {
     <div className="dark-theme min-h-screen relative">
       <AnimatedBackground />
 
-      <header className="relative z-10 flex justify-between items-center px-8 py-6">
+ <header className="relative z-10 flex justify-between items-center px-8 py-6">
         <Link href="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30">
+          <div className="w-10 h-10">
             <Image 
               src="/logos/foresight flow logo.jpeg" 
               alt="ForesightFlow Logo" 
-              width={32} 
-              height={32} 
-              className="rounded"
+              width={40} 
+              height={40} 
+              className="rounded-lg"
             />
           </div>
           <span className="text-2xl font-bold text-white">ForesightFlow</span>

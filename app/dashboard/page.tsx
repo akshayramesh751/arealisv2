@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,6 +8,15 @@ import { Button } from '@/components/ui/button';
 import { TrendingUp, Package, DollarSign, ChartBar as BarChart3, ArrowRight } from 'lucide-react';
 
 export default function DashboardPage() {
+  const [userInfo, setUserInfo] = useState<{ firstName: string; lastName: string; company: string; } | undefined>(undefined);
+
+  useEffect(() => {
+    const storedUserInfo = localStorage.getItem('userInfo');
+    if (storedUserInfo) {
+      setUserInfo(JSON.parse(storedUserInfo));
+    }
+  }, []);
+
   const dashboards = [
     {
       title: 'Sales Dashboard',
@@ -37,7 +49,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <DashboardLayout>
+    <DashboardLayout userInfo={userInfo}>
       <div className="space-y-8">
         <div>
           <h1 className="text-4xl font-bold mb-2">Strategic Command Center</h1>
