@@ -56,7 +56,7 @@ export default function SignUpPage() {
         company: formData.company,
       };
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
-      router.push('/dashboard');
+      router.push('/connect-data');
     }
   };
 
