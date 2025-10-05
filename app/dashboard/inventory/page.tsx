@@ -9,7 +9,7 @@ export default function InventoryDashboardPage() {
     <DashboardLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Inventory Management Dashboard</h1>
+          <h1 className="text-4xl font-bold mb-2 text-foreground">Inventory Management Dashboard</h1>
           <p className="text-muted-foreground text-lg">
             Real-time insights into stock levels and supply chain efficiency
           </p>

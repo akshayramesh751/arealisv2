@@ -96,7 +96,7 @@ export default function PlanPage() {
         <div>
           <div className="flex items-center gap-3 mb-4">
             <Rocket className="w-10 h-10 text-primary" />
-            <h1 className="text-4xl font-bold">Actionable Business Plan</h1>
+            <h1 className="text-4xl font-bold mb-2 text-foreground">Actionable Business Plan</h1>
           </div>
           <p className="text-muted-foreground text-lg">
             Your comprehensive strategic roadmap with prioritized action items and resource

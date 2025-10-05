@@ -6,9 +6,11 @@ import { DashboardLayout } from '@/components/dashboard-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TrendingUp, Package, DollarSign, ChartBar as BarChart3, ArrowRight } from 'lucide-react';
+import { useTheme } from '@/contexts/theme-context';
 
 export default function DashboardPage() {
   const [userInfo, setUserInfo] = useState<{ firstName: string; lastName: string; company: string; } | undefined>(undefined);
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const storedUserInfo = localStorage.getItem('userInfo');
@@ -57,7 +59,7 @@ export default function DashboardPage() {
     <DashboardLayout userInfo={userInfo}>
       <div className="space-y-8">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Strategic Command Center</h1>
+          <h1 className="text-4xl font-bold mb-2 text-foreground">Strategic Command Center</h1>
           <p className="text-muted-foreground text-lg">
             Your comprehensive overview of business intelligence across all key metrics
           </p>
@@ -67,7 +69,9 @@ export default function DashboardPage() {
           {dashboards.map((dashboard, i) => (
             <Card
               key={i}
-              className="frosted-glass-light hover:shadow-lg transition-all hover:scale-[1.02] group"
+              className={`hover:shadow-lg transition-all hover:scale-[1.02] group ${
+                isDark ? 'bg-black border-gray-800' : 'frosted-glass-light'
+              }`}
             >
               <CardHeader>
                 <div className="flex items-start justify-between mb-4">
@@ -87,8 +91,10 @@ export default function DashboardPage() {
                     </Button>
                   </Link>
                 </div>
-                <CardTitle className="text-2xl">{dashboard.title}</CardTitle>
-                <CardDescription className="text-base">{dashboard.description}</CardDescription>
+                <CardTitle className="text-2xl text-foreground">{dashboard.title}</CardTitle>
+                <CardDescription className={`text-base ${isDark ? 'text-gray-300' : ''}`}>
+                  {dashboard.description}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div
@@ -100,10 +106,12 @@ export default function DashboardPage() {
           ))}
         </div>
 
-        <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
+        <Card className={`bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20 ${
+          isDark ? 'bg-black' : ''
+        }`}>
           <CardHeader>
-            <CardTitle>Ready to explore deeper insights?</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-foreground">Ready to explore deeper insights?</CardTitle>
+            <CardDescription className={isDark ? 'text-gray-300' : ''}>
               Click on any dashboard above to dive into detailed analysis, or explore our
               AI-powered growth recommendations
             </CardDescription>

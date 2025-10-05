@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { ChartBar as BarChart3, TrendingUp, FileText, Plus, Moon, Sun, LogOut } from 'lucide-react';
@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Image from 'next/image';
+import { useTheme } from '@/contexts/theme-context';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -27,7 +28,7 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children, userInfo }: DashboardLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isDark, setIsDark] = useState(false);
+  const { isDark, toggleDark } = useTheme();
 
   const navItems = [
     { href: '/dashboard', label: 'Analysis', icon: BarChart3 },
@@ -62,7 +63,7 @@ export function DashboardLayout({ children, userInfo }: DashboardLayoutProps) {
                 className="rounded-lg"
               />
             </div>
-            <span className="text-xl font-bold">ForesightFlow</span>
+            <span className="text-xl font-bold text-foreground">ForesightFlow</span>
           </Link>
 
           <Button className="mb-6 bg-primary hover:bg-primary/90 text-white">
@@ -77,7 +78,7 @@ export function DashboardLayout({ children, userInfo }: DashboardLayoutProps) {
                 (item, i) => (
                   <button
                     key={i}
-                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-secondary text-sm transition-colors"
+                    className="w-full text-left px-3 py-2 rounded-lg hover:bg-secondary text-sm transition-colors text-foreground"
                   >
                     {item}
                   </button>
@@ -111,10 +112,14 @@ export function DashboardLayout({ children, userInfo }: DashboardLayoutProps) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => setIsDark(!isDark)}
-                  className="rounded-full"
+                  onClick={toggleDark}
+                  className="rounded-full hover:bg-secondary"
                 >
-                  {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                  {isDark ? (
+                    <Sun className="w-5 h-5 text-white" />
+                  ) : (
+                    <Moon className="w-5 h-5 text-foreground" />
+                  )}
                 </Button>
 
                 <DropdownMenu>

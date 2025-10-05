@@ -103,7 +103,7 @@ export default function RecommendationsPage() {
     <DashboardLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Growth Recommendations</h1>
+          <h1 className="text-4xl font-bold mb-2 text-foreground">Growth Recommendations</h1>
           <p className="text-muted-foreground text-lg">
             AI-powered strategic recommendations tailored to your business insights
           </p>

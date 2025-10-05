@@ -9,7 +9,7 @@ export default function ProductsDashboardPage() {
     <DashboardLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Product Category Intelligence</h1>
+          <h1 className="text-4xl font-bold mb-2 text-foreground">Product Category Intelligence</h1>
           <p className="text-muted-foreground text-lg">
             Comprehensive analysis of product performance and market positioning
           </p>

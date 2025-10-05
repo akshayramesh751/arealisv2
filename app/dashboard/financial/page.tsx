@@ -9,7 +9,7 @@ export default function FinancialDashboardPage() {
     <DashboardLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Financial Health Dashboard</h1>
+          <h1 className="text-4xl font-bold mb-2 text-foreground">Financial Health Dashboard</h1>
           <p className="text-muted-foreground text-lg">
             Comprehensive view of profitability, cash flow, and financial metrics
           </p>

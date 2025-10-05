@@ -15,7 +15,7 @@ export default function SalesDashboardPage() {
       <div className="space-y-8">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-4xl font-bold mb-2">Sales Intelligence Dashboard</h1>
+            <h1 className="text-4xl font-bold mb-2 text-foreground">Sales Intelligence Dashboard</h1>
             <p className="text-muted-foreground text-lg">
               Comprehensive analysis of regional performance and revenue trends
             </p>
