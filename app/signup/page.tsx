@@ -20,6 +20,9 @@ export default function SignUpPage() {
     password: '',
     company: '',
     role: '',
+    shopName: '',
+    shopifyApiKey: '',
+    shopifyPassword: '',
   });
 
   const [validation, setValidation] = useState({
@@ -54,6 +57,8 @@ export default function SignUpPage() {
         firstName: formData.firstName,
         lastName: formData.lastName,
         company: formData.company,
+        shopName: formData.shopName,
+        shopifyApiKey: formData.shopifyApiKey,
       };
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
       router.push('/connect-data');
@@ -260,6 +265,57 @@ export default function SignUpPage() {
                           placeholder="CEO, Manager, Analyst..."
                           value={formData.role}
                           onChange={(e) => handleInputChange('role', e.target.value)}
+                          className="pl-11 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-primary"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="shopName" className="text-white">
+                        Shop Name
+                      </Label>
+                      <div className="relative">
+                        <Network className="absolute left-3 top-3 w-5 h-5 text-white/50" />
+                        <Input
+                          id="shopName"
+                          type="text"
+                          placeholder="My Shopify Store"
+                          value={formData.shopName}
+                          onChange={(e) => handleInputChange('shopName', e.target.value)}
+                          className="pl-11 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-primary"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="shopifyApiKey" className="text-white">
+                        Shopify API Key
+                      </Label>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-3 w-5 h-5 text-white/50" />
+                        <Input
+                          id="shopifyApiKey"
+                          type="text"
+                          placeholder="sk_live_..."
+                          value={formData.shopifyApiKey}
+                          onChange={(e) => handleInputChange('shopifyApiKey', e.target.value)}
+                          className="pl-11 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-primary"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="shopifyPassword" className="text-white">
+                        Shopify Password
+                      </Label>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-3 w-5 h-5 text-white/50" />
+                        <Input
+                          id="shopifyPassword"
+                          type="password"
+                          placeholder="Shopify Password"
+                          value={formData.shopifyPassword}
+                          onChange={(e) => handleInputChange('shopifyPassword', e.target.value)}
                           className="pl-11 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:border-primary"
                         />
                       </div>
