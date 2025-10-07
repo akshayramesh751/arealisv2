@@ -40,7 +40,7 @@ export default function ConnectDataPage() {
         const next = prev + 1;
 
         if (next <= 30) {
-          setProgressStatus(`Connecting to Data Source: ${next}% Complete`);
+          setProgressStatus(`Connecting to Data Sources and Validating Files...`);
         } else if (next <= 75) {
           setProgressStatus('Analyzing Data Schema and Generating Initial Insights...');
         } else if (next <= 99) {

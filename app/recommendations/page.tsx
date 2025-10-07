@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -19,6 +20,11 @@ import { Separator } from '@/components/ui/separator';
 
 export default function RecommendationsPage() {
   const [selectedRecommendation, setSelectedRecommendation] = useState<number | null>(null);
+  const router = useRouter();
+
+  const handleCreatePlan = () => {
+    router.push('/plan');
+  };
 
   const recommendations = [
     {
@@ -101,15 +107,17 @@ export default function RecommendationsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8">
-        <div>
-          <h1 className="text-4xl font-bold mb-2 text-foreground">Growth Recommendations</h1>
-          <p className="text-muted-foreground text-lg">
+      <div className="space-y-6 sm:space-y-8">
+        <div className="text-center sm:text-left">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 text-foreground px-2 sm:px-0">
+            Growth Recommendations
+          </h1>
+          <p className="text-muted-foreground text-sm sm:text-base lg:text-lg px-2 sm:px-0 leading-relaxed">
             AI-powered strategic recommendations tailored to your business insights
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6">
           {recommendations.map((rec, i) => (
             <Card
               key={i}
@@ -119,28 +127,34 @@ export default function RecommendationsPage() {
                   : 'hover:shadow-md'
               }`}
             >
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-4">
+              <CardHeader className="px-4 sm:px-6 py-4 sm:py-6">
+                <div className="flex flex-col space-y-4 sm:flex-row sm:items-start sm:justify-between sm:space-y-0">
+                  <div className="flex items-start gap-3 sm:gap-4">
                     <div
-                      className={`w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br ${rec.color}`}
+                      className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center bg-gradient-to-br ${rec.color} flex-shrink-0`}
                     >
-                      <rec.icon className="w-7 h-7 text-white" />
+                      <rec.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Badge variant="secondary">{rec.category}</Badge>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <Badge variant="secondary" className="text-xs">
+                          {rec.category}
+                        </Badge>
                         <Badge
                           variant={rec.priority === 'High' ? 'destructive' : 'default'}
-                          className={rec.priority === 'High' ? 'bg-primary' : ''}
+                          className={`text-xs ${
+                            rec.priority === 'High' ? 'bg-primary' : ''
+                          }`}
                         >
                           {rec.priority} Priority
                         </Badge>
                       </div>
-                      <CardTitle className="text-2xl mb-2">{rec.title}</CardTitle>
-                      <CardDescription className="text-base flex items-center gap-2">
-                        <Target className="w-4 h-4" />
-                        {rec.impact}
+                      <CardTitle className="text-lg sm:text-xl lg:text-2xl mb-2 leading-tight">
+                        {rec.title}
+                      </CardTitle>
+                      <CardDescription className="text-sm sm:text-base flex items-center gap-2 leading-relaxed">
+                        <Target className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                        <span className="break-words">{rec.impact}</span>
                       </CardDescription>
                     </div>
                   </div>
@@ -149,35 +163,44 @@ export default function RecommendationsPage() {
                       setSelectedRecommendation(selectedRecommendation === i ? null : i)
                     }
                     variant={selectedRecommendation === i ? 'default' : 'outline'}
-                    className={selectedRecommendation === i ? 'bg-primary' : ''}
+                    className={`w-full sm:w-auto text-xs sm:text-sm ${
+                      selectedRecommendation === i ? 'bg-primary' : ''
+                    }`}
+                    size="sm"
                   >
                     {selectedRecommendation === i ? 'Hide Details' : 'View Details'}
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-2" />
                   </Button>
                 </div>
               </CardHeader>
 
               {selectedRecommendation === i && (
-                <CardContent className="space-y-6 pt-6 border-t">
+                <CardContent className="space-y-4 sm:space-y-6 pt-4 sm:pt-6 border-t px-4 sm:px-6 pb-4 sm:pb-6">
                   <div>
                     <div className="flex items-center gap-2 mb-3">
-                      <Lightbulb className="w-5 h-5 text-primary" />
-                      <h3 className="text-lg font-semibold">Strategic Rationale</h3>
+                      <Lightbulb className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+                      <h3 className="text-base sm:text-lg font-semibold">Strategic Rationale</h3>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed">{rec.rationale}</p>
+                    <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
+                      {rec.rationale}
+                    </p>
                   </div>
 
                   <Separator />
 
                   <div>
-                    <h3 className="text-lg font-semibold mb-4">Actionable Implementation Steps</h3>
-                    <ol className="space-y-3">
+                    <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
+                      Actionable Implementation Steps
+                    </h3>
+                    <ol className="space-y-2 sm:space-y-3">
                       {rec.steps.map((step, idx) => (
-                        <li key={idx} className="flex gap-3">
-                          <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-semibold">
+                        <li key={idx} className="flex gap-2 sm:gap-3">
+                          <div className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs sm:text-sm font-semibold">
                             {idx + 1}
                           </div>
-                          <p className="text-muted-foreground pt-0.5">{step}</p>
+                          <p className="text-muted-foreground pt-0.5 text-xs sm:text-sm leading-relaxed">
+                            {step}
+                          </p>
                         </li>
                       ))}
                     </ol>
@@ -185,21 +208,25 @@ export default function RecommendationsPage() {
 
                   <Separator />
 
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                     <div>
-                      <h3 className="text-lg font-semibold mb-2">Expected Outcomes</h3>
-                      <p className="text-muted-foreground">{rec.outcomes}</p>
+                      <h3 className="text-base sm:text-lg font-semibold mb-2">Expected Outcomes</h3>
+                      <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
+                        {rec.outcomes}
+                      </p>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold mb-2">Implementation Timeline</h3>
-                      <p className="text-muted-foreground">{rec.timeline}</p>
+                      <h3 className="text-base sm:text-lg font-semibold mb-2">Implementation Timeline</h3>
+                      <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
+                        {rec.timeline}
+                      </p>
                     </div>
                   </div>
 
                   <div
-                    className={`h-48 rounded-lg bg-gradient-to-br ${rec.color} opacity-20 flex items-center justify-center`}
+                    className={`h-32 sm:h-40 lg:h-48 rounded-lg bg-gradient-to-br ${rec.color} opacity-20 flex items-center justify-center`}
                   >
-                    <rec.icon className="w-16 h-16 text-white/50" />
+                    <rec.icon className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 text-white/50" />
                   </div>
                 </CardContent>
               )}
@@ -208,16 +235,22 @@ export default function RecommendationsPage() {
         </div>
 
         <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
-          <CardHeader>
-            <CardTitle>Ready to transform insights into action?</CardTitle>
-            <CardDescription>
+          <CardHeader className="px-4 sm:px-6 text-center sm:text-left">
+            <CardTitle className="text-lg sm:text-xl">
+              Ready to transform insights into action?
+            </CardTitle>
+            <CardDescription className="text-sm sm:text-base leading-relaxed">
               Generate your comprehensive business plan with prioritized action items
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Button className="bg-primary hover:bg-primary/90 text-white" size="lg">
+          <CardContent className="px-4 sm:px-6">
+            <Button
+              onClick={handleCreatePlan}
+              className="bg-primary hover:bg-primary/90 text-white w-full sm:w-auto text-sm sm:text-base"
+              size="lg"
+            >
               Create Actionable Business Plan
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-2" />
             </Button>
           </CardContent>
         </Card>
