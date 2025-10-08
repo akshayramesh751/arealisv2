@@ -3,7 +3,7 @@
 import { ReactNode, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { ChartBar as BarChart3, TrendingUp, FileText, Plus, Moon, Sun, LogOut, Menu, X, Settings, User, Bell, Shield, Database, Palette } from 'lucide-react';
+import { ChartBar as BarChart3, TrendingUp, FileText, Plus, Moon, Sun, LogOut, Menu, X, Settings, User, Bell, Shield, Database, Palette, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
@@ -29,6 +29,14 @@ interface DashboardLayoutProps {
   };
 }
 
+function maskApiKey(key?: string) {
+  if (!key) return '';
+  // show last 4 chars, mask rest as • (dots)
+  const last = key.slice(-4);
+  const masked = '•'.repeat(Math.max(0, key.length - 4));
+  return `${masked}${last}`;
+}
+
 export function DashboardLayout({ children, userInfo }: DashboardLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -38,6 +46,8 @@ export function DashboardLayout({ children, userInfo }: DashboardLayoutProps) {
   const [notifications, setNotifications] = useState(true);
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [dataRetention, setDataRetention] = useState('30');
+  const [localUserInfo, setLocalUserInfo] = useState<{ firstName?: string; lastName?: string; company?: string; shopName?: string; shopifyApiKey?: string } | null>(null);
+  const [showApiKey, setShowApiKey] = useState(false);
 
   const navItems = [
     { href: '/dashboard', label: 'Analysis', icon: BarChart3 },
@@ -58,7 +68,20 @@ export function DashboardLayout({ children, userInfo }: DashboardLayoutProps) {
   const initials = userInfo
     ? `${userInfo.firstName.charAt(0)}${userInfo.lastName.charAt(0)}`.toUpperCase()
     : 'JD';
-  const company = userInfo?.company || 'Company Name';
+  const company = userInfo?.company || localUserInfo?.company || 'Company Name';
+  const shopName = localUserInfo?.shopName || '';
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('userInfo');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setLocalUserInfo(parsed);
+      }
+    } catch (e) {
+      // ignore parse errors
+    }
+  }, []);
 
   return (
     <div className={isDark ? 'dark-theme' : ''}>
@@ -147,6 +170,45 @@ export function DashboardLayout({ children, userInfo }: DashboardLayoutProps) {
                         className={isDark ? 'bg-gray-800 border-gray-600 text-white' : ''}
                         readOnly
                       />
+                    </div>
+                    {/* Shop Name & API Key */}
+                    <div className="sm:col-span-2">
+                      <Label htmlFor="shopName" className={isDark ? 'text-gray-300' : 'text-gray-700'}>
+                        Shop Name
+                      </Label>
+                      <Input
+                        id="shopName"
+                        value={localUserInfo?.shopName || ''}
+                        className={isDark ? 'bg-gray-800 border-gray-600 text-white' : ''}
+                        readOnly
+                      />
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <Label htmlFor="shopifyApiKey" className={isDark ? 'text-gray-300' : 'text-gray-700'}>
+                        Shopify API Key
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          id="shopifyApiKey"
+                          value={localUserInfo?.shopifyApiKey ? (showApiKey ? localUserInfo.shopifyApiKey : maskApiKey(localUserInfo.shopifyApiKey)) : ''}
+                          className={isDark ? 'bg-gray-800 border-gray-600 text-white pr-10' : 'pr-10'}
+                          readOnly
+                        />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setShowApiKey((s) => !s)}
+                          className="absolute right-2 top-1/2 -translate-y-1/2"
+                          aria-label={showApiKey ? 'Hide API key' : 'Show API key'}
+                        >
+                          {showApiKey ? (
+                            <EyeOff className="w-4 h-4" />
+                          ) : (
+                            <Eye className="w-4 h-4" />
+                          )}
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -444,6 +506,11 @@ export function DashboardLayout({ children, userInfo }: DashboardLayoutProps) {
                       <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                         {company}
                       </p>
+                      {shopName && (
+                        <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'} mt-1`}>
+                          Shop: {shopName}
+                        </p>
+                      )}
                     </div>
                     <DropdownMenuSeparator className={isDark ? 'border-gray-700' : 'border-gray-200'} />
                     <DropdownMenuItem
