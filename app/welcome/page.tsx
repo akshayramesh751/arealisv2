@@ -11,7 +11,9 @@ import Image from 'next/image';
 export default function WelcomePage() {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState<any>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [backgroundLoaded, setBackgroundLoaded] = useState(false);
+  const [welcomeVisible, setWelcomeVisible] = useState(false);
+  const [cardsVisible, setCardsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -29,13 +31,23 @@ export default function WelcomePage() {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
-    // Trigger entrance animation
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 300);
+    // Sequential animation timing - reduced delays
+    const backgroundTimer = setTimeout(() => {
+      setBackgroundLoaded(true);
+    }, 100); // Reduced from 500ms to 100ms
+    
+    const welcomeTimer = setTimeout(() => {
+      setWelcomeVisible(true);
+    }, 600); // Reduced from 1200ms to 600ms
+    
+    const cardsTimer = setTimeout(() => {
+      setCardsVisible(true);
+    }, 1000); // Reduced from 1800ms to 1000ms
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(backgroundTimer);
+      clearTimeout(welcomeTimer);
+      clearTimeout(cardsTimer);
       window.removeEventListener('resize', checkMobile);
     };
   }, []);
@@ -73,12 +85,26 @@ export default function WelcomePage() {
   ];
 
   return (
-    <div className={`dark-theme relative ${isMobile ? 'min-h-screen' : 'h-screen overflow-hidden'}`}>
-      <WelcomeBackground />
+    <div className={`dark-theme relative ${isMobile ? 'min-h-screen' : 'h-screen overflow-hidden'}`}
+         style={{
+           background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)'
+         }}>
+      
+      {/* Immediate dark background to prevent white flash */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900/20 to-slate-900" />
+      
+      {/* Animated background with fade-in */}
+      <div className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+        backgroundLoaded ? 'opacity-100' : 'opacity-0'
+      }`}>
+        <WelcomeBackground />
+      </div>
 
       <div className={`relative z-10 ${isMobile ? 'min-h-screen' : 'h-screen'} flex flex-col`}>
         {/* Header - Same for both mobile and desktop */}
-        <header className="flex justify-between items-center px-6 sm:px-8 lg:px-12 py-6 flex-shrink-0">
+        <header className={`flex justify-between items-center px-6 sm:px-8 lg:px-12 py-6 flex-shrink-0 transition-all duration-600 ease-out ${
+          backgroundLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+        }`}>
           <div className="flex items-center gap-4">
             <span className="text-white/70 text-sm cursor-pointer hover:text-white transition-colors">
               Help & Support
@@ -100,12 +126,14 @@ export default function WelcomePage() {
         <main className={`flex-1 flex flex-col items-center px-6 sm:px-8 lg:px-12 ${
           isMobile ? 'py-8' : 'justify-center min-h-0'
         }`}>
-          <div className={`max-w-4xl mx-auto text-center transition-all duration-1000 ease-out ${
+          <div className={`max-w-4xl mx-auto text-center ${
             isMobile ? 'space-y-12' : 'space-y-8'
-          } ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          }`}>
             
-            {/* Welcome Message */}
-            <div className={`${isMobile ? 'space-y-6 pt-8' : 'space-y-4'}`}>
+            {/* Welcome Message with fade-in animation */}
+            <div className={`transition-all duration-800 ease-out ${
+              welcomeVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            } ${isMobile ? 'space-y-6 pt-8' : 'space-y-4'}`}>
               <h1 className={`font-bold text-white ${
                 isMobile ? 'text-2xl sm:text-3xl' : 'text-3xl sm:text-4xl lg:text-5xl'
               }`}>
@@ -118,7 +146,7 @@ export default function WelcomePage() {
               </p>
             </div>
 
-            {/* Feature Cards */}
+            {/* Feature Cards with staggered fade-in animation */}
             <div className={`grid gap-4 lg:gap-6 ${
               isMobile ? 'grid-cols-1 space-y-4' : 'md:grid-cols-3'
             }`}>
@@ -127,8 +155,16 @@ export default function WelcomePage() {
                   key={index}
                   className={`bg-black/20 backdrop-blur-xl border border-white/10 rounded-2xl hover:bg-black/30 hover:border-white/20 transition-all duration-300 cursor-pointer group ${
                     isMobile ? 'p-8' : 'p-6'
-                  } ${isLoaded ? 'animate-slide-in-up' : ''}`}
-                  style={{ animationDelay: `${index * 0.2}s` }}
+                  } ${
+                    cardsVisible 
+                      ? 'opacity-100 translate-y-0' 
+                      : 'opacity-0 translate-y-8'
+                  }`}
+                  style={{ 
+                    transitionDelay: cardsVisible ? `${index * 120}ms` : '0ms',
+                    transitionDuration: '600ms',
+                    transitionTimingFunction: 'ease-out'
+                  }}
                   onClick={feature.onClick}
                 >
                   <div className={`flex flex-col items-center text-center ${
