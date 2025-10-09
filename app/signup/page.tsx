@@ -13,6 +13,7 @@ import Image from 'next/image';
 export default function SignUpPage() {
   const router = useRouter();
   const [isEntering, setIsEntering] = useState(false);
+  const [isFullyLoaded, setIsFullyLoaded] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -32,11 +33,27 @@ export default function SignUpPage() {
   });
 
   useEffect(() => {
-    // Trigger enter animation when component mounts
-    const timer = setTimeout(() => {
-      setIsEntering(true);
+    // Prevent scrolling initially
+    document.body.style.overflow = 'hidden';
+    
+    // Shorter delay since transition starts navigation earlier
+    const loadTimer = setTimeout(() => {
+      setIsFullyLoaded(true);
     }, 100);
-    return () => clearTimeout(timer);
+
+    const enterTimer = setTimeout(() => {
+      setIsEntering(true);
+      // Restore scrolling after fade-in starts
+      setTimeout(() => {
+        document.body.style.overflow = 'unset';
+      }, 100);
+    }, 300); // Reduced delay for immediate fade-in
+
+    return () => {
+      clearTimeout(loadTimer);
+      clearTimeout(enterTimer);
+      document.body.style.overflow = 'unset';
+    };
   }, []);
 
   const handleInputChange = (field: string, value: string) => {
@@ -70,7 +87,7 @@ export default function SignUpPage() {
         shopifyApiKey: formData.shopifyApiKey,
       };
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
-      router.push('/connect-data');
+      router.push('/welcome'); // Changed from '/connect-data' to '/welcome'
     }
   };
 
@@ -82,12 +99,17 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="dark-theme min-h-screen relative">
+    <div className="dark-theme min-h-screen relative overflow-hidden">
       <AnimatedBackground />
 
+      {/* Transition overlay that fades out smoothly */}
+      <div className={`fixed inset-0 bg-black z-40 transition-all duration-700 ${
+        isFullyLoaded && isEntering ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      }`} />
+
       <div className="min-h-screen flex items-center justify-center p-4 relative z-10">
-        <div className={`w-full max-w-md transition-all duration-650 ease-out ${
-          isEntering ? 'form-enter' : 'opacity-0 translate-y-8'
+        <div className={`w-full max-w-md transition-all duration-1000 ease-out ${
+          isEntering ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'
         }`}>
           <div className="bg-black/20 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12 space-y-8 shadow-2xl">
             {/* Progress Steps */}
