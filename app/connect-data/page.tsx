@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { AnimatedBackground } from '@/components/animated-background';
-import { Network, Upload, FileText, CircleAlert as AlertCircle, CircleCheck as CheckCircle2 } from 'lucide-react';
+import { Network, Upload, FileText, CircleAlert as AlertCircle, CircleCheck as CheckCircle2, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -17,12 +19,22 @@ export default function ConnectDataPage() {
     financial: null as File | null,
     merged: null as File | null,
   });
+  const [shopifyData, setShopifyData] = useState({
+    apiKey: '',
+    password: ''
+  });
+  const [showApiKey, setShowApiKey] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [progressStatus, setProgressStatus] = useState('');
 
   const handleFileUpload = (type: keyof typeof uploadedFiles, file: File | null) => {
     setUploadedFiles(prev => ({ ...prev, [type]: file }));
+  };
+
+  const handleShopifyChange = (field: keyof typeof shopifyData, value: string) => {
+    setShopifyData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleDrop = (e: React.DragEvent, type: keyof typeof uploadedFiles) => {
@@ -110,7 +122,7 @@ export default function ConnectDataPage() {
     <div className="dark-theme min-h-screen relative">
       <AnimatedBackground />
 
- <header className="relative z-10 flex justify-between items-center px-8 py-6">
+      <header className="relative z-10 flex justify-between items-center px-8 py-6">
         <Link href="/" className="flex items-center gap-3">
           <div className="w-10 h-10">
             <Image 
@@ -155,6 +167,69 @@ export default function ConnectDataPage() {
               </AlertDescription>
             </Alert>
             <UploadZone type="merged" title="Merged Business Report" icon={Upload} />
+
+            {/* Divider */}
+            <div className="relative my-8">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-white/20" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-black/20 px-4 py-2 text-white/60 rounded-lg">Optional Shopify Integration</span>
+              </div>
+            </div>
+
+            {/* Shopify Fields */}
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="shopifyApiKey" className="text-white text-sm">
+                  Shopify API Key <span className="text-white/50">(Optional)</span>
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="shopifyApiKey"
+                    type={showApiKey ? "text" : "password"}
+                    value={shopifyData.apiKey}
+                    onChange={(e) => handleShopifyChange('apiKey', e.target.value)}
+                    placeholder="Enter your Shopify API key"
+                    className="bg-black/20 border-white/20 text-white placeholder:text-gray-400 focus:border-primary pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowApiKey(!showApiKey)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                  >
+                    {showApiKey ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="shopifyPassword" className="text-white text-sm">
+                  Shopify Password <span className="text-white/50">(Optional)</span>
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="shopifyPassword"
+                    type={showPassword ? "text" : "password"}
+                    value={shopifyData.password}
+                    onChange={(e) => handleShopifyChange('password', e.target.value)}
+                    placeholder="Enter your Shopify password"
+                    className="bg-black/20 border-white/20 text-white placeholder:text-gray-400 focus:border-primary pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <p className="text-white/50 text-xs mt-2">
+                Connect your Shopify store for enhanced e-commerce insights and real-time data synchronization.
+              </p>
+            </div>
           </div>
         </div>
 

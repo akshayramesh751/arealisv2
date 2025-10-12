@@ -19,7 +19,7 @@ export default function FinancialDashboardPage() {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {[
-            { label: 'Net Profit', value: '$847K', icon: DollarSign },
+            { label: 'Net Profit', value: '₹84.7 Lakhs', icon: DollarSign },
             { label: 'Profit Margin', value: '35.2%', icon: Percent },
             { label: 'Revenue Growth', value: '+18.5%', icon: TrendingUp },
             { label: 'Operating Ratio', value: '0.72', icon: PieChart },

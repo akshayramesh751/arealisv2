@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { TrendingUp, MapPin, Users, DollarSign } from 'lucide-react';
+import { TrendingUp, MapPin, Users,IndianRupee,} from 'lucide-react';
 import { useTheme } from '@/contexts/theme-context';
+import Link from 'next/link';
 
 export default function SalesDashboardPage() {
   const [dataView, setDataView] = useState<'your-data' | 'market' | 'comparison'>('your-data');
@@ -73,9 +74,9 @@ export default function SalesDashboardPage() {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {[
-            { label: 'Total Revenue', value: '$2.4M', change: '+12.5%', icon: DollarSign },
+            { label: 'Total Revenue', value: '₹24 Lakhs', change: '+12.5%', icon: IndianRupee },
             { label: 'Active Customers', value: '1,234', change: '+8.2%', icon: Users },
-            { label: 'Avg. Order Value', value: '$1,947', change: '+5.1%', icon: TrendingUp },
+            { label: 'Avg. Order Value', value: '₹1,947', change: '+5.1%', icon: TrendingUp },
             { label: 'Top Region', value: 'Northeast', change: '38% share', icon: MapPin },
           ].map((stat, i) => (
             <Card key={i} className="min-h-[100px] sm:min-h-[120px]">
@@ -141,8 +142,20 @@ export default function SalesDashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           <Card>
             <CardHeader className="px-4 sm:px-6">
-              <CardTitle className="text-lg sm:text-xl">Revenue Trend</CardTitle>
-              <CardDescription className="text-sm sm:text-base">Monthly revenue over the past 12 months</CardDescription>
+              <div className="flex items-start justify-between">
+                <div>
+                  <CardTitle className="text-lg sm:text-xl">Revenue Trend</CardTitle>
+                  <CardDescription className="text-sm sm:text-base">Monthly revenue over the past 12 months</CardDescription>
+                </div>
+                <Link href="/dashboard/sales/revenue-trend">
+                  <Button 
+                    size="sm" 
+                    className="bg-primary hover:bg-primary/90 text-white text-xs px-3 py-1.5 h-auto flex-shrink-0"
+                  >
+                    Explore
+                  </Button>
+                </Link>
+              </div>
             </CardHeader>
             <CardContent className="px-4 sm:px-6">
               <div className="h-48 sm:h-56 lg:h-64 rounded-lg bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex items-center justify-center">
@@ -153,8 +166,20 @@ export default function SalesDashboardPage() {
 
           <Card>
             <CardHeader className="px-4 sm:px-6">
-              <CardTitle className="text-lg sm:text-xl">Customer Segments</CardTitle>
-              <CardDescription className="text-sm sm:text-base">Distribution by customer type</CardDescription>
+              <div className="flex items-start justify-between">
+                <div>
+                  <CardTitle className="text-lg sm:text-xl">Customer Segments</CardTitle>
+                  <CardDescription className="text-sm sm:text-base">Distribution by customer type</CardDescription>
+                </div>
+                <Link href="/dashboard/sales/customer-segment">
+                  <Button 
+                    size="sm" 
+                    className="bg-primary hover:bg-primary/90 text-white text-xs px-3 py-1.5 h-auto flex-shrink-0"
+                  >
+                    Explore
+                  </Button>
+                </Link>
+              </div>
             </CardHeader>
             <CardContent className="px-4 sm:px-6">
               <div className="h-48 sm:h-56 lg:h-64 rounded-lg bg-gradient-to-br from-green-500/10 to-emerald-500/10 flex items-center justify-center">

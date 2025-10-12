@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { AnimatedBackground } from '@/components/animated-background';
 import { PageTransition } from '@/components/page-transition';
-import { Network, TrendingUp, Target } from 'lucide-react';
+import { TrendingUp, Target, Network } from 'lucide-react';
 import Image from 'next/image';
 
 export default function LandingPage() {
@@ -21,9 +21,15 @@ export default function LandingPage() {
   };
 
   const handleTransitionComplete = () => {
+  const nextPage = sessionStorage.getItem('nextPage');
+  if (nextPage) {
+    sessionStorage.removeItem('nextPage');
+    router.push(nextPage);
+  } else {
+    // Default behavior (signup page)
     router.push('/signup');
-  };
-
+  }
+};
   return (
     <div className="dark-theme min-h-screen relative">
       <AnimatedBackground />
@@ -45,20 +51,20 @@ export default function LandingPage() {
           </div>
           <Button 
             size="sm" 
-            onClick={handleSignUpClick}
+             onClick={(e) => {
+               e.preventDefault();
+               setIsTransitioning(true);
+               sessionStorage.setItem('nextPage', '/signin');
+             }}
             className="bg-primary hover:bg-primary/90 text-white font-semibold text-xs sm:text-sm lg:text-base px-2 sm:px-4 lg:px-6 py-1.5 sm:py-2"
           >
-            Sign Up
+            Log in
           </Button>
         </header>
 
         <main className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-120px)] px-4 sm:px-6 lg:px-4">
           <div className="max-w-5xl mx-auto text-center space-y-8 sm:space-y-10 lg:space-y-12">
-            <div className="space-y-6 sm:space-y-6 animate-slide-in-up">
-              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full frosted-glass">
-                <span className="w-2 h-2 rounded-full bg-primary animate-pulse-glow"></span>
-                <span className="text-xs sm:text-sm text-white/90">AI-Powered Strategic Intelligence</span>
-              </div>
+            <div className="space-y-6 sm:space-y-6 animate-slide-in-up pt-8 sm:pt-12 lg:pt-16">
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight">
                 Transform Data Into

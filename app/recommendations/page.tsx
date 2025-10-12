@@ -14,7 +14,7 @@ import {
   Target,
   ArrowRight,
   Lightbulb,
-  DollarSign,
+  IndianRupee,
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
@@ -31,7 +31,7 @@ export default function RecommendationsPage() {
       category: 'Market Expansion',
       title: 'Southeast Region Market Entry',
       priority: 'High',
-      impact: 'Revenue Growth: +$450K annually',
+      impact: 'Revenue Growth: +₹4.5 Lakhs annually',
       icon: MapPin,
       color: 'from-blue-500 to-cyan-500',
       rationale:
@@ -39,7 +39,7 @@ export default function RecommendationsPage() {
       steps: [
         'Conduct detailed market research and competitive analysis in target cities',
         'Establish distribution partnerships with 3-5 regional distributors',
-        'Launch targeted marketing campaign with $75K budget allocation',
+        'Launch targeted marketing campaign with ₹75K budget allocation',
         'Deploy regional sales team of 4-6 representatives',
         'Implement localized pricing strategy based on regional purchasing power',
       ],
@@ -51,7 +51,7 @@ export default function RecommendationsPage() {
       title: 'Dynamic Pricing Optimization',
       priority: 'High',
       impact: 'Margin Improvement: +3.5%',
-      icon: DollarSign,
+      icon: IndianRupee,
       color: 'from-green-500 to-emerald-500',
       rationale:
         'Current fixed pricing model leaves margin opportunity on the table. Market analysis shows customers in premium segments demonstrate 20% lower price sensitivity, while competitive pressure exists in value segments.',
@@ -69,7 +69,7 @@ export default function RecommendationsPage() {
       category: 'Product Development',
       title: 'Premium Product Line Expansion',
       priority: 'Medium',
-      impact: 'New Revenue Stream: $280K',
+      impact: 'New Revenue Stream: ₹2.8 Lakhs annually',
       icon: Package,
       color: 'from-purple-500 to-pink-500',
       rationale:

@@ -5,11 +5,12 @@ import { DashboardLayout } from '@/components/dashboard-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CircleCheck as CheckCircle2, Calendar, DollarSign, Users, TrendingUp, Target, Rocket } from 'lucide-react';
+import { CircleCheck as CheckCircle2, Calendar, IndianRupee , Users, TrendingUp, Target, Rocket, ChevronDown, ChevronUp } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function PlanPage() {
   const [isScheduled, setIsScheduled] = useState(false);
+  const [expandedItem, setExpandedItem] = useState<number | null>(null);
 
   const strategicPillars = [
     {
@@ -38,48 +39,48 @@ export default function PlanPage() {
       title: 'Deploy Dynamic Pricing Engine',
       timeframe: 'Weeks 1-4',
       owner: 'Revenue Operations',
-      description:
-        'Implement AI-driven pricing optimization across high-velocity product categories',
+      description: 'Implement AI-driven pricing optimization across high-velocity product categories',
+      expandedDescription: 'Deploy machine learning algorithms to analyze market conditions, competitor pricing, and demand patterns in real-time. The system will automatically adjust prices within predefined parameters to maximize revenue while maintaining competitiveness. This includes setting up pricing rules, testing frameworks, and performance monitoring dashboards.',
     },
     {
       priority: 'Short-term',
       title: 'Launch Southeast Market Research',
       timeframe: 'Weeks 5-8',
       owner: 'Business Development',
-      description:
-        'Conduct comprehensive market analysis and identify distribution partnership opportunities',
+      description: 'Conduct comprehensive market analysis and identify distribution partnership opportunities',
+      expandedDescription: 'Execute detailed market research covering demographic analysis, competitive landscape mapping, regulatory requirements, and customer behavior patterns. Identify and evaluate potential distribution partners, assess market entry barriers, and develop go-to-market strategy tailored to Southeast region dynamics.',
     },
     {
       priority: 'Short-term',
       title: 'Design Loyalty Program Framework',
       timeframe: 'Weeks 6-10',
       owner: 'Customer Success',
-      description:
-        'Create tiered rewards structure and integrate with existing customer platform',
+      description: 'Create tiered rewards structure and integrate with existing customer platform',
+      expandedDescription: 'Design comprehensive loyalty program architecture including tier definitions, point accumulation rules, redemption mechanisms, and exclusive benefits. Develop technical integration plan with existing CRM and e-commerce platforms, create customer communication workflows, and establish program performance metrics and tracking systems.',
     },
     {
       priority: 'Mid-term',
       title: 'Premium Product Line Development',
       timeframe: 'Weeks 12-20',
       owner: 'Product Management',
-      description:
-        'Source premium suppliers and develop brand positioning for high-margin product expansion',
+      description: 'Source premium suppliers and develop brand positioning for high-margin product expansion',
+      expandedDescription: 'Identify and evaluate premium product opportunities through market research and customer feedback analysis. Establish relationships with high-quality suppliers, develop premium brand positioning and packaging design, create pricing strategy, and plan marketing campaigns for successful product launch and market penetration.',
     },
     {
       priority: 'Mid-term',
       title: 'Southeast Region Market Entry',
       timeframe: 'Weeks 16-24',
       owner: 'Sales & Marketing',
-      description:
-        'Establish distribution partnerships and deploy regional sales team with targeted campaigns',
+      description: 'Establish distribution partnerships and deploy regional sales team with targeted campaigns',
+      expandedDescription: 'Execute market entry strategy by finalizing distribution partnerships, recruiting and training regional sales team, launching localized marketing campaigns, and establishing customer service infrastructure. Implement region-specific pricing strategies and promotional activities to drive initial market penetration and brand awareness.',
     },
     {
       priority: 'Long-term',
       title: 'Loyalty Program Full Launch',
       timeframe: 'Week 20+',
       owner: 'Marketing',
-      description:
-        'Roll out comprehensive loyalty program with referral incentives and exclusive benefits',
+      description: 'Roll out comprehensive loyalty program with referral incentives and exclusive benefits',
+      expandedDescription: 'Launch fully developed loyalty program with multi-channel customer onboarding, referral incentive system, exclusive member benefits, and personalized reward offerings. Implement customer engagement campaigns, establish program analytics and optimization processes, and create long-term retention strategies to maximize customer lifetime value.',
     },
   ];
 
@@ -133,37 +134,57 @@ export default function PlanPage() {
           </CardHeader>
           <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6">
             {actionItems.map((item, i) => (
-              <div
-                key={i}
-                className="flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border hover:border-primary/50 transition-colors bg-card"
-              >
-                <div className="flex flex-col items-center gap-2">
-                  <div
-                    className={`w-3 h-3 rounded-full ${getPriorityColor(item.priority)} flex-shrink-0`}
-                  ></div>
-                  {i < actionItems.length - 1 && (
-                    <div className="w-0.5 h-full bg-border"></div>
-                  )}
-                </div>
-                <div className="flex-1 space-y-2 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
-                        <Badge variant="outline" className="text-xs w-fit">
-                          {item.priority}
-                        </Badge>
-                        <span className="text-xs text-muted-foreground">{item.timeframe}</span>
+              <div key={i}>
+                <div className="flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border hover:border-primary/50 transition-colors bg-card">
+                  <div className="flex flex-col items-center gap-2">
+                    <div
+                      className={`w-3 h-3 rounded-full ${getPriorityColor(item.priority)} flex-shrink-0`}
+                    ></div>
+                    {i < actionItems.length - 1 && (
+                      <div className="w-0.5 h-full bg-border"></div>
+                    )}
+                  </div>
+                  <div className="flex-1 space-y-2 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
+                          <Badge variant="outline" className="text-xs w-fit">
+                            {item.priority}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">{item.timeframe}</span>
+                        </div>
+                        <h3 className="font-semibold text-base sm:text-lg leading-tight">{item.title}</h3>
                       </div>
-                      <h3 className="font-semibold text-base sm:text-lg leading-tight">{item.title}</h3>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setExpandedItem(expandedItem === i ? null : i)}
+                        className="h-8 w-8 p-0 flex-shrink-0"
+                      >
+                        {expandedItem === i ? (
+                          <ChevronUp className="w-4 h-4" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4" />
+                        )}
+                      </Button>
                     </div>
-                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0" />
-                  </div>
-                  <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">{item.description}</p>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Users className="w-3 h-3 flex-shrink-0" />
-                    <span>Owner: {item.owner}</span>
+                    <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">{item.description}</p>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Users className="w-3 h-3 flex-shrink-0" />
+                      <span>Owner: {item.owner}</span>
+                    </div>
                   </div>
                 </div>
+
+                {/* Expanded Content */}
+                {expandedItem === i && (
+                  <div className="ml-7 sm:ml-8 mt-3 p-3 sm:p-4 bg-muted/50 rounded-lg border-l-2 border-primary/30">
+                    <h4 className="font-medium text-sm sm:text-base mb-2 text-foreground">Detailed Implementation Plan</h4>
+                    <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
+                      {item.expandedDescription}
+                    </p>
+                  </div>
+                )}
               </div>
             ))}
           </CardContent>
@@ -173,7 +194,7 @@ export default function PlanPage() {
           <Card>
             <CardHeader className="px-4 sm:px-6">
               <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                <IndianRupee className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                 Resource Impact Summary
               </CardTitle>
             </CardHeader>
@@ -181,7 +202,7 @@ export default function PlanPage() {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-xs sm:text-sm font-medium">Estimated Budget</span>
-                  <span className="text-xs sm:text-sm font-bold">$425,000</span>
+                  <span className="text-xs sm:text-sm font-bold">₹4.25 Lakhs</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-xs sm:text-sm font-medium">Projected ROI</span>
